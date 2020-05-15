@@ -79,6 +79,42 @@ def ecdh():
     print('cheating answer: \n', cheat[0])
 
     # add public keys together
-    print('adding public keys: \n', (A[0] + B[0], A[1] + B[1]))
+    print('adding public keys: \n', elli_add(a, p, A[0], A[1], B[0], B[1]))
 
-ecdh()
+# Elliptic Curve Digital Signature Algorithm
+def ecdsa():
+    """Key generation"""
+    p, a, b, q = 17, 2, 2, 19
+    hx = 5
+    k_E = 13
+    d = 10
+    A = (5, 1)
+    # B = dA
+    B = double_and_add(a, p, A[0], A[1], d)
+    # print(verify(B[0], B[1], a, b, p))
+    print('B =', B)
+    "Signature generation"
+    # R = K_E * A
+    R = double_and_add(a, p, A[0], A[1], k_E)
+    print('R =', R)
+    r = R[0]
+    # s = (hx + dr) k_E ^(-1) mod q
+    s = ((hx + d * r) * mod_inv(k_E, q)) % q
+    print('s =', s)
+    "Signature verification"
+    # w = s^(-1) mod q, u1 = w*h(x) mod q, u2 = w*r mod q
+    w = mod_inv(s, q) % q
+    u1 = (w * hx) % q
+    u2 = (w * r) % q
+    print('w, u1, u2 =', (w, u1, u2))
+    u1A = double_and_add(a, p, A[0], A[1], u1)
+    u2B = double_and_add(a, p, B[0], B[1], u2)
+    #print(u1A, u2B)
+    P = elli_add(a, p, u1A[0], u1A[1], u2B[0], u2B[1])
+    print('P =', P)
+    # verify if x_p = r mod q
+    print('verify signature:', P[0] % q == r % q)
+
+
+# ecdh()
+ecdsa()
