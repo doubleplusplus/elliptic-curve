@@ -68,11 +68,17 @@ def ecdh():
     print('Bob public key: \n', B)
     # aB = k_prA * B = T
     aB = double_and_add(a, p, B[0], B[1], k_prA)
-    print('agreed upon key: \n', aB[0])
+    print('Alice agreed upon key: \n', aB[0])
     # bA = k_prB * B = T
     bA = double_and_add(a, p, A[0], A[1], k_prB)
-    print('agreed upon key: \n', bA[0])
+    print('Bob agreed upon key: \n', bA[0])
 
-    print(A[0] + A[1] + B[0] + B[1])
+    # agreed upon key using just the private information (A cheating answer)
+    cheat = double_and_add(a, p, x, y, k_prA)
+    cheat = double_and_add(a, p, cheat[0], cheat[1], k_prB)
+    print('cheating answer: \n', cheat[0])
+
+    # add public keys together
+    print('adding public keys: \n', (A[0] + B[0], A[1] + B[1]))
 
 ecdh()
