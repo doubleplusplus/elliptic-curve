@@ -85,8 +85,8 @@ def ecdh():
 def ecdsa():
     """Key generation"""
     p, a, b, q = 17, 2, 2, 19
-    hx = 5
-    k_E = 13
+    hx = 11
+    k_E = 11
     d = 10
     A = (5, 1)
     # B = dA
